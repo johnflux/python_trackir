@@ -7,7 +7,9 @@ import sys
 import tkinter
 
 def main():
-
+    # We have to create a Window for TrackIR, but we do not need to actually
+    # show it, nor run the tkinter event loop.  We set the title though just
+    # in case it shows up the Windows Task Manager etc.
     app = tkinter.Tk()
     app.title("TrackIR Log to CSV")
     try:
@@ -41,8 +43,8 @@ def main():
             if previous_frame != -1:
                 num_missed_frames += data.frame - previous_frame - 1
             previous_frame = data.frame
-            new_time = time.time()
-            print(new_time, ',', data.frame, ',', round(data.roll, 1), ',', round(data.pitch, 1), ',', round(data.yaw, 1), ',', round(data.x, 1), ',', round(data.y, 1), ',', round(data.z, 1))
+            time_ms = round((time.time() - start_time)*1000)
+            print(time_ms, ',', data.frame, ',', round(data.roll, 1), ',', round(data.pitch, 1), ',', round(data.yaw, 1), ',', round(data.x, 1), ',', round(data.y, 1), ',', round(data.z, 1))
             #logprint(data)
         time.sleep(1/240.0) # Sample at ~240hz, for the ~120hz signal
 
